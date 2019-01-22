@@ -1,0 +1,40 @@
+{% extends "layout.ejs" %}
+{% block content %}
+
+<script type="text/javascript" src="/js/datatables/jquery.validate.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#login").validate({
+            rules: {
+                email: {required: true, email: true},
+                password: {required: true, minlength: 6, maxlength: 16}
+            },
+            messages: {
+                email: {required: "You can't leave this empty.", email: "Invalid email address."},
+                password: {required: "You can't leave this empty.", minlength: "Password must be 6 characters long.", maxlength: "Password not exceed 16 characters."}
+            }
+        });
+    });
+</script>
+
+    <!-- Login Form -->
+    <div class="login-logo"><img alt="" class="img-responsive" src="/img/logo.png"></div>
+    <form action="/login" method="post" name="login" id="login" class="form-signin">
+    <h1 class="text-center main-logo row">Admin</h1>
+    {%if loginMessage != '' %}
+        <div class="alert-danger" style="padding:6px 10px"> {{loginMessage}}</div>
+    {%endif%} 
+     <h3 class="form-signin-heading">Please sign in</h3>
+        <div class="login-field">
+            <label class="sr-only">Email</label>
+            <input type="email" placeholder="Email" class="form-control" name="email" id="email" maxlength="80" value="">        
+            <label class="sr-only">Password</label>
+            <input type="password" placeholder="Password" class="form-control" name="password" id="password" minlength="6" maxlength="20">
+        </div>
+        <button type="submit" class="btn btn-lg btn-primary btn-block" title="Login">Login</button>
+    </form>
+{% endblock %} 
+
+
+
+

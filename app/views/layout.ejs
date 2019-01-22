@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Online - {{ title }}</title>
+        <meta name="description" content="HMVC web framework for Node.js."/>
+        <meta name="keywords" content="nodejs, express, mvc, hmvc, framework, mongoose"/>
+        <link rel="stylesheet" href="/css/bootstrap.min.css"> 
+        <link rel="stylesheet" href="/css/style.css"> 
+        <script type="text/javascript" src="/js/datatables/jquery-1.12.4.js"></script>
+        <script type="text/javascript" src="/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/js/datatables/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="/js/datatables/dataTables.bootstrap.min.js"></script>
+        <link href="/js/datatables/dataTables.bootstrap.min.css" rel="stylesheet"> 
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% block meta %}{% endblock %}
+    </head>
+    <body>
+            {% block navbar %}
+            {% include "navbar.ejs" %}
+            {% endblock %}
+        <div class="container">
+            {% block header %}
+            {% endblock %}
+            {% include "flash.ejs" %}
+        </div>
+        <!-- /container -->
+        <div class="container main-content">
+            {% block content %}
+            {% endblock %}
+        </div><!-- /container -->
+        {% include "footer.ejs" %}
+        {% block footerjs %}  
+        {% endblock %}
+    </body>
+</html>

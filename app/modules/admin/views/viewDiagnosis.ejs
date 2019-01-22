@@ -1,0 +1,1046 @@
+{% extends "layout.ejs" %}
+{% block content %}
+
+{% if diagnosisArray.data %}
+<div>
+  <h3 class="pull-left">Diagnosis Detail</h3>
+  <a href="/admin/diagnosis" title="Back" class="btn btn-primary pull-right m-t10">Back</a>
+  </div>
+<table id="users-listing" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+          <th>User Name</th>
+          <th>Relation</th>
+          <th>Date of Birth</th>
+          <th>Disease Name</th>
+          <th>Part Of Eye</th>
+          <th>Date of submission</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% set sn = 1 %}
+        <tr>
+          <td>{{diagnosisArray.data.userId.firstName}} {{diagnosisArray.data.userId.lastName}}</td>
+          {% if(diagnosisArray.data.selfHave == 'I have the disease') %}
+          <td>Me</td>
+          {%endif%}
+          {% if(diagnosisArray.data.selfHave != 'I have the disease') %}
+          <td>{{diagnosisArray.data.userRelative}}</td>
+          {%endif%}
+          <td>{{diagnosisArray.data.dateOfBirth}}</td>
+          <td>{{diagnosisArray.data.diagnosisName}}</td>
+          <td>{{diagnosisArray.data.eyePartName}}</td>
+          <td>{{diagnosisArray.data.formatedDate}}</td>
+        </tr>
+        {% set sn = sn + 1 %}
+    </tbody>
+</table>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">
+      1. Who has the disease ?
+    </h4>
+  </div>
+  <div id="questionOne" class="panel-collapse collapse in" aria-expanded="true" style="">
+    <div class="panel-body">
+      {% if(diagnosisArray.data.selfHave) %}
+      Me
+      {%endif%}
+      {% if(diagnosisArray.data.userRelative) %}
+      {{diagnosisArray.data.userRelative}}
+      {%endif%}
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">
+      2. What is your birth date ?
+    </h4>
+  </div>
+  <div id="questionTwo" class="panel-collapse collapse in" aria-expanded="true" style="">
+    <div class="panel-body">
+      {{diagnosisArray.data.dateOfBirth}}
+    </div>
+  </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">
+      3. What is your Gender ?
+    </h4>
+  </div>
+  <div id="questionTwo" class="panel-collapse collapse in" aria-expanded="true" style="">
+    <div class="panel-body">
+      {{diagnosisArray.data.gender}}
+      {% if(diagnosisArray.data.otherGenderText != '') %}
+      - {{diagnosisArray.data.otherGenderText}}
+      {%endif%}
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title"> 
+      4. What is your Ethnicity ?
+    </h4>
+  </div>
+  <div id="questionTwo" class="panel-collapse collapse in" aria-expanded="true" style="">
+    <div class="panel-body">
+      {{diagnosisArray.data.ethnicity}}
+      {% if(diagnosisArray.data.otherEthnicity != '') %}
+      - {{diagnosisArray.data.otherEthnicity}}
+      {%endif%}
+       
+    </div>
+  </div>
+</div>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">
+      5. Do you know the diagnosis ?
+    </h4>
+  </div>
+  <div id="questionThree" class="panel-collapse collapse in" aria-expanded="true" style="">
+    <div class="panel-body">
+      {% if(diagnosisArray.data.knowDiagnosis == 'Yes') %}
+      Yes - {{diagnosisArray.data.diagnosisName}}
+      {%endif%}
+      {% if(diagnosisArray.data.knowDiagnosis != 'Yes') %}
+      No
+      {%endif%}
+    </div>
+  </div>
+</div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">
+      6. The diagnosis is not known, choose the part of eye.    </h4>
+  </div>
+  <div id="questionFour" class="panel-collapse collapse in" aria-expanded="true" style="">
+    <div class="panel-body">
+      {% if(diagnosisArray.data.dontKnowExactPartOfEye) %}
+      Don't Know
+      {%endif%}
+      {% if(diagnosisArray.data.eyePartName) %}
+      {{diagnosisArray.data.eyePartName}}
+      {%endif%}
+      {% if(diagnosisArray.data.syndromeOcular) %}
+      <div>
+      Syndrome with ocular involvement: {{diagnosisArray.data.syndromeOcular}}
+      </div>
+      {%endif%}
+    </div>
+  </div>
+</div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">
+      7. Is there any other blood-related person in the family with same type of the disease ?</h4>
+  </div>
+  <div id="questionFive" class="panel-collapse collapse in" aria-expanded="true" style="">
+    <div class="panel-body">
+      {% if(diagnosisArray.data.bloodRelatedPersonInFamily=='Yes') %}
+      Yes - {{diagnosisArray.data.nameOfPersonsInFamily.length}} Persons ( {{diagnosisArray.nameOfPersonsInFamily}} )
+      {%endif%}
+      {% if(diagnosisArray.data.bloodRelatedPersonInFamily=='No') %}
+      No
+      {%endif%}
+    </div>
+  </div>
+</div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">
+      8. Family picture of the disease.</h4>
+  </div>
+  <div id="questionSix" class="panel-collapse collapse in" aria-expanded="true" style="">
+    <div class="panel-body">
+      {% if(diagnosisArray.data.typeOfInheritance) %}
+      <div>
+          Type of inheritance - {{diagnosisArray.data.typeOfInheritance}} 
+      </div>
+      {%endif%}
+
+      {% if(diagnosisArray.data.typeOfInheritanceOtherText) %}
+      <div>
+          Description - {{diagnosisArray.data.typeOfInheritanceOtherText}} 
+      </div>
+      {%endif%}
+
+      {% if(diagnosisArray.data.typeOfInheritanceImage) %}
+      <div>
+        Description Image - <img alt="" class="img-description" src="/uploads/diagnosis/{{diagnosisArray.data.typeOfInheritanceImage}}"> 
+      </div>
+      {%endif%}
+
+  </div>
+ </div>
+</div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">9. Did you measure visual acuity ?</h4>
+  </div>
+  <div id="questionSeven" class="panel-collapse collapse in" aria-expanded="true" style="">
+    <div class="panel-body">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+    <li class="active"><a href="#leftEyeVisual" data-toggle="tab" aria-expanded="true">Left Eye</a>
+    </li>
+    <li class=""><a href="#rightEyeVisual" data-toggle="tab" aria-expanded="false">Right Eye</a>
+    </li>
+    </ul>    
+    <!-- Nav tabs -->
+    
+     <div class="tab-content">
+        <div class="tab-pane fade active in" id="leftEyeVisual">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>S.No </th>
+                            <th>Date</th>
+                            <th>In Dark</th>
+                            <th>In Light</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% set leftCount = 1 %}
+                    {%for leftEyeData in diagnosisArray.leftEyeVisualData %}
+                        <tr>
+                            <th scope="row">{{leftCount}}</th>
+                            <td>{{diagnosisArray.leftEyeVisualData[leftCount-1].date}}</td>
+                            <td>{{diagnosisArray.leftEyeVisualData[leftCount-1].dark}}</td>
+                            <td>{{diagnosisArray.leftEyeVisualData[leftCount-1].light}}</td>
+                        </tr>
+                    {% set leftCount = leftCount + 1 %}
+                    {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+            {% if(diagnosisArray.leftEyeMeasureVisualSee) %}
+            <div class="col-md-12 m-b15">
+                I see - {{diagnosisArray.leftEyeMeasureVisualSee}}
+            </div>
+            {%endif%}
+            {% if(diagnosisArray.leftEyeMeasureVisualNotSee) %}
+            <div class="col-md-12 m-b15">
+                I can't see - {{diagnosisArray.leftEyeMeasureVisualNotSee}}
+            </div>
+            {%endif%}
+        </div>
+        <div class="tab-pane fade" id="rightEyeVisual">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>S.No </th>
+                            <th>Date</th>
+                            <th>In Dark</th>
+                            <th>In Light</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% set rightCount = 1 %}
+                    {%for rightEyeData in diagnosisArray.rightEyeVisualData %}
+                        <tr>
+                            <th scope="row">{{rightCount}}</th>
+                            <td>{{diagnosisArray.rightEyeVisualData[rightCount-1].date}}</td>
+                            <td>{{diagnosisArray.rightEyeVisualData[rightCount-1].dark}}</td>
+                            <td>{{diagnosisArray.rightEyeVisualData[rightCount-1].light}}</td>
+                        </tr>
+                    {% set rightCount = rightCount + 1 %}
+                    {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+            {% if(diagnosisArray.rightEyeMeasureVisualSee) %}
+            <div class="col-md-12 m-b15">
+                I see - {{diagnosisArray.rightEyeMeasureVisualSee}}
+            </div>
+            {%endif%}
+            {% if(diagnosisArray.rightEyeMeasureVisualNotSee) %}
+            <div class="col-md-12 m-b15">
+                I can't see - {{diagnosisArray.rightEyeMeasureVisualNotSee}}
+            </div>
+            {%endif%}
+        </div>
+    </div>
+  </div>
+ </div>
+</div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">10. Have you done refraction measurement ?</h4>
+  </div>
+  <div id="questionEight" class="panel-collapse collapse in" aria-expanded="true" style="">
+    <div class="panel-body">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+    <li class="active"><a href="#leftEyeRefraction" data-toggle="tab" aria-expanded="true">Left Eye</a>
+    </li>
+    <li class=""><a href="#rightEyeRefraction" data-toggle="tab" aria-expanded="false">Right Eye</a>
+    </li>
+    <li class=""><a href="#refractionImages" data-toggle="tab" aria-expanded="false">Refraction Images</a>
+    </li>
+    </ul>    
+    <!-- Nav tabs -->
+    
+     <div class="tab-content">
+        <div class="tab-pane fade active in" id="leftEyeRefraction">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>S.No </th>
+                            <th>Date</th>
+                            <th>SPH</th>
+                            <th>CYL</th>
+                            <th>AX</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% set leftRefractCount = 1 %}
+                    {%for leftRefData in diagnosisArray.leftEyeRefractionData %}
+                        <tr>
+                            <th scope="row">{{leftRefractCount}}</th>
+                            <td>{{diagnosisArray.leftEyeRefractionData[leftRefractCount-1].date}}</td>
+                            <td>{{diagnosisArray.leftEyeRefractionData[leftRefractCount-1].sph}}</td>
+                            <td>{{diagnosisArray.leftEyeRefractionData[leftRefractCount-1].cyl}}</td>
+                            <td>{{diagnosisArray.leftEyeRefractionData[leftRefractCount-1].ax}}</td>
+                        </tr>
+                    {% set leftRefractCount = leftRefractCount + 1 %}
+                    {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="rightEyeRefraction">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>S.No </th>
+                            <th>Date</th>
+                            <th>SPH</th>
+                            <th>CYL</th>
+                            <th>AX</th>
+                            
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% set rightRefractCount = 1 %}
+                    {%for rightRefData in diagnosisArray.rightEyeRefractionData %}
+                        <tr>
+                            <th scope="row">{{rightRefractCount}}</th>
+                            <td>{{diagnosisArray.rightEyeRefractionData[rightRefractCount-1].date}}</td>
+                            <td>{{diagnosisArray.rightEyeRefractionData[rightRefractCount-1].sph}}</td>
+                            <td>{{diagnosisArray.rightEyeRefractionData[rightRefractCount-1].cyl}}</td>
+                            <td>{{diagnosisArray.rightEyeRefractionData[rightRefractCount-1].ax}}</td>
+                        </tr>
+                    {% set rightRefractCount = rightRefractCount + 1 %}
+                    {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="refractionImages">
+            <div class="table-responsive">
+                 {%for refractionImages in diagnosisArray.data.imagesTestRefractionMeasurement %}
+                    <div class="col-md-3 m-b15">
+                        <img alt="" class="img-responsive" src="/uploads/diagnosis/{{refractionImages}}">
+                    </div>
+                 {%endfor%}
+            </div>
+        </div>
+    </div>
+  </div>
+ </div>
+</div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">11. What is intraocular pressure ? </h4>
+  </div>
+  <div id="questionNine" class="panel-collapse collapse in" aria-expanded="true" style="">
+    <div class="panel-body">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+    <li class="active"><a href="#leftEyeIntra" data-toggle="tab" aria-expanded="true">Left Eye</a>
+    </li>
+    <li class=""><a href="#rightEyeIntra" data-toggle="tab" aria-expanded="false">Right Eye</a>
+    </li>
+    </ul>    
+    <!-- Nav tabs -->
+    
+     <div class="tab-content">
+        <div class="tab-pane fade active in" id="leftEyeIntra">
+            <div class="panel-body">
+                {% if(diagnosisArray.data.leftEyeIntraocularPressureMethod) %}
+                    <div>
+                        Method Name - {{diagnosisArray.data.leftEyeIntraocularPressureMethod}}
+                    </div>
+                {%endif%}
+
+                {% if(diagnosisArray.data.leftEyeIntraocularPressureIOP) %}
+                <div>
+                    IOP - {{diagnosisArray.data.leftEyeIntraocularPressureIOP}}
+                </div>
+                {%endif%}
+
+                {% if(diagnosisArray.data.leftEyeIntraocularPressureOthr) %}
+                <div>
+                    Other - {{diagnosisArray.data.leftEyeIntraocularPressureOthr}}
+                </div>
+                {%endif%}
+            </div>
+        </div>
+        <div class="tab-pane fade" id="rightEyeIntra">
+            <div class="panel-body">
+                {% if(diagnosisArray.data.rightEyeIntraocularPressureMethod) %}
+                <div>
+                    Method Name - {{diagnosisArray.data.rightEyeIntraocularPressureMethod}}
+                </div>
+                {%endif%}
+                {% if(diagnosisArray.data.rightEyeIntraocularPressureIOP) %}
+                <div>
+                    IOP - {{diagnosisArray.data.rightEyeIntraocularPressureIOP}}
+                </div>
+                {%endif%}
+                {% if(diagnosisArray.data.rightEyeIntraocularPressureOthr) %}
+                <div>
+                    Other - {{diagnosisArray.data.rightEyeIntraocularPressureOthr}}
+                </div>
+                {%endif%}
+            </div>
+        </div>
+    </div>
+  </div>
+ </div>
+</div>
+
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">12. Have you measured visual fields ?</h4>
+  </div>
+  <div id="questionTen" class="panel-collapse collapse in" aria-expanded="true" style="">
+    <div class="panel-body">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+    <li class="active"><a href="#leftMeasuredVisual" data-toggle="tab" aria-expanded="true">Left Eye</a>
+    </li>
+    <li class=""><a href="#rightMeasuredVisual" data-toggle="tab" aria-expanded="false">Right Eye</a>
+    </li>
+    </ul>    
+    <!-- Nav tabs -->
+    
+     <div class="tab-content">
+        <div class="tab-pane fade active in" id="leftMeasuredVisual">
+            <div class="panel-body">
+                {% if(diagnosisArray.data.leftEyeMeasuredOptions.length>0) %}
+                <div class="col-md-12 m-b15">
+                    <strong>Options:</strong> {{diagnosisArray.leftEyeMeasuredOptions}}
+                </div>
+                {%endif%}
+                {% if(diagnosisArray.data.leftEyeMeasuredNoImage) %}
+                <div>
+                    I don't have description or image visual fields 
+                </div>
+                {%endif%}
+                {% if(diagnosisArray.data.leftEyeMeasuredOther) %}
+                <div>
+                    Other - {{diagnosisArray.data.leftEyeMeasuredOther}} 
+                </div>
+                {%endif%}
+                {% if(diagnosisArray.data.leftEyeMeasuredPerimetryImages) %}
+                <div>
+                    {%for leftPerimetryImages in diagnosisArray.data.leftEyeMeasuredPerimetryImages %}
+                    <div class="col-md-3 m-b15">
+                        <img alt="" class="img-responsive" src="/uploads/diagnosis/{{leftPerimetryImages}}">
+                    </div>
+                 {%endfor%} 
+                </div>
+                {%endif%}
+                {% if(diagnosisArray.data.leftEyeMeasuredPerimetry.length>0) %}
+                <div class="col-md-12">
+                   <strong>Date:</strong> {{diagnosisArray.data.leftEyeMeasuredPerimetry}}
+                </div>
+                {%endif%}
+                
+            </div>
+        </div>
+        <div class="tab-pane fade" id="rightMeasuredVisual">
+            <div class="panel-body">
+                {% if(diagnosisArray.data.rightEyeMeasuredOptions.length>0) %}
+                <div class="col-md-12 m-b15">
+                    <strong>Options:</strong> {{diagnosisArray.rightEyeMeasuredOptions}}
+                </div>
+                {%endif%}
+                {% if(diagnosisArray.data.rightEyeMeasuredNoImage) %}
+                <div>
+                    I don't have description or image visual fields 
+                </div>
+                {%endif%}
+                {% if(diagnosisArray.data.rightEyeMeasuredOther) %}
+                <div>
+                    Other -  {{diagnosisArray.data.rightEyeMeasuredOther}}
+                </div>
+                {%endif%}
+                {% if(diagnosisArray.data.rightEyeMeasuredPerimetryImages) %}
+                <div>
+                    {%for rightPerimetryImages in diagnosisArray.data.rightEyeMeasuredPerimetryImages %}
+                    <div class="col-md-3 m-b15">
+                        <img alt="" class="img-responsive" src="/uploads/diagnosis/{{rightPerimetryImages}}">
+                    </div>
+                 {%endfor%} 
+                </div>
+                {%endif%}
+                {% if(diagnosisArray.data.rightEyeMeasuredPerimetry.length>0) %}
+                <div class="col-md-12">
+                   <strong>Date:</strong> {{diagnosisArray.data.rightEyeMeasuredPerimetry}}
+                </div>
+                {%endif%}
+                
+            </div>
+        </div>
+    </div>
+  </div>
+ </div>
+</div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">13. Is there progression of the disease from the day it first started ?</h4>
+  </div>
+  <div id="questionEleven" class="panel-collapse collapse in" aria-expanded="true" style="">
+    <div class="panel-body">
+        {% if(diagnosisArray.data.progressionVisionStablePart1) %}
+        <div>
+            The Vision is stable from last ( 1 to 100 ) - {{diagnosisArray.data.progressionVisionStablePart1}} {{diagnosisArray.data.progressionVisionStablePart2}}
+        </div>
+        {%endif%}
+        {% if(diagnosisArray.data.progressionVisionDeteriorates.length>0) %}
+        <div>
+            The Vision deteriorates - {{diagnosisArray.data.progressionVisionDeteriorates}}
+        </div>
+        {%endif%}
+        {% if(diagnosisArray.data.progressionVisionOther) %}
+        <div>
+            Other - {{diagnosisArray.data.progressionVisionOther}}
+        </div>
+        {%endif%}
+        {% if(diagnosisArray.data.progressionVisionRates) %}
+        <div>
+            The Progression rate is - {{diagnosisArray.data.progressionVisionRates}}
+        </div>
+        {%endif%}
+
+    </div>
+ </div>
+</div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">14. Have you undergone eye fundus examination ?</h4>
+  </div>
+  <div id="questionTwelve" class="panel-collapse collapse in" aria-expanded="true" style="">
+    <div class="panel-body">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+    <li class="active"><a href="#leftFundus" data-toggle="tab" aria-expanded="true">Left Eye</a>
+    </li>
+    <li class=""><a href="#rightfundus" data-toggle="tab" aria-expanded="false">Right Eye</a>
+    </li>
+    </ul>    
+    <!-- Nav tabs -->
+    
+     <div class="tab-content">
+        <div class="tab-pane fade active in" id="leftFundus">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>S.No </th>
+                            <th>Optic nerve disc</th>
+                            <th>Macula</th>
+                            <th>Blood Vessels</th>
+                            <th>Peripheral retina</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% set leftFundusCount = 1 %}
+                    {%for leftFundusData in diagnosisArray.leftEyeFundusData %}
+                        <tr>
+                            <th scope="row">{{leftFundusCount}}</th>
+                            <td>{{leftFundusData["Optic nerve disc"]}}</td>
+                            <td>{{leftFundusData.Macula}}</td>
+                            <td>{{leftFundusData["Blood vessels"]}}</td>
+                            <td>{{leftFundusData["Peripheral retina"]}}</td>
+                            <td>{{leftFundusData.date}}</td>
+                        </tr>
+                    {% set leftFundusCount = leftFundusCount + 1 %}
+                    {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+
+            {%for leftFunduImage in diagnosisArray.data.leftEyeFundusExamImages %}
+            <div class="col-md-3 m-b15">
+                        <img alt="" class="img-responsive" src="/uploads/diagnosis/{{leftFunduImage}}">
+            </div>
+            {%endfor%}
+
+        </div>
+        <div class="tab-pane fade" id="rightfundus">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>S.No </th>
+                            <th>Optic nerve disc</th>
+                            <th>Macula</th>
+                            <th>Blood Vessels</th>
+                            <th>Peripheral retina</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% set rightFundusCount = 1 %}
+                    {%for rightFundusData in diagnosisArray.rightEyeFundusData %}
+                        <tr>
+                            <th scope="row">{{rightFundusCount}}</th>
+                            <td>{{rightFundusData["Optic nerve disc"]}}</td>
+                            <td>{{rightFundusData.Macula}}</td>
+                            <td>{{rightFundusData["Blood vessels"]}}</td>
+                            <td>{{rightFundusData["Peripheral retina"]}}</td>
+                            <td>{{rightFundusData.date}}</td>
+                        </tr>
+                    {% set rightFundusCount = rightFundusCount + 1 %}
+                    {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+
+            {%for rightFunduImage in diagnosisArray.data.rightEyeFundusExamImages %}
+            <div class="col-md-3 m-b15">
+                        <img alt="" class="img-responsive" src="/uploads/diagnosis/{{rightFunduImage}}">
+            </div>
+            {%endfor%}
+        </div>
+    </div>
+  </div>
+ </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">15. Have you made optical tomography (OCT) scans ? </h4>
+  </div>
+  <div id="questionThirteen" class="panel-collapse collapse in" aria-expanded="true" style="">
+    <div class="panel-body">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs">
+        <li class="active"><a href="#leftOptical" data-toggle="tab" aria-expanded="true">Left Eye</a>
+        </li>
+        <li class=""><a href="#rightOptical" data-toggle="tab" aria-expanded="false">Right Eye</a>
+        </li>
+        </ul>    
+        <!-- Nav tabs -->
+        
+        <div class="tab-content">
+            <div class="tab-pane fade active in" id="leftOptical">
+                <div class="panel-body">
+                    {% if(diagnosisArray.data.leftEyeCoherenceOctOptions.length>0) %}
+                    <div class="col-md-12 m-b15">
+                        <strong>Options:</strong> {{diagnosisArray.leftEyeCoherenceOctOptions}}
+                    </div>
+                    {%endif%}
+                    {% if(diagnosisArray.data.leftEyeCoherenceOctIhave) %}
+                    <div class="col-md-12 m-b15">
+                        {{diagnosisArray.data.leftEyeCoherenceOctIhave}}
+                    </div>
+                    {%endif%}
+                    
+                    {% if(diagnosisArray.data.coherenceOctDontHave) %}
+                    <div class="col-md-12 m-b15">
+                        {{diagnosisArray.data.coherenceOctDontHave}}
+                    </div>
+                    {%endif%}
+
+                    {% if(diagnosisArray.data.leftEyeCohrncOctMeasurement.length>0) %}
+                    <div class="col-md-12 m-b15">
+                        {{diagnosisArray.data.leftEyeCohrncOctMeasurement}}
+                    </div>
+                    {%endif%}
+
+                    {% if(diagnosisArray.data.leftEyeCoherenceOctOther) %}
+                    <div class="col-md-12 m-b15">
+                        Other - {{diagnosisArray.data.leftEyeCoherenceOctOther}}
+                    </div>
+                    {%endif%}
+
+                    {% if(diagnosisArray.data.leftEyeCoherenceOctImages.length>0) %}
+                    <div>
+                        {%for leftCoherence in diagnosisArray.data.leftEyeCoherenceOctImages %}
+                        <div class="col-md-3 m-b15">
+                        <img alt="" class="img-responsive" src="/uploads/diagnosis/{{leftCoherence}}">
+                        </div>
+                     {%endfor%}
+                    </div>
+                    {%endif%}
+                </div>
+            </div>
+            <div class="tab-pane fade" id="rightOptical">
+                <div class="panel-body">
+                    {% if(diagnosisArray.data.rightEyeCoherenceOctOptions.length>0) %}
+                    <div class="col-md-12 m-b15">
+                        <strong>Options:</strong> {{diagnosisArray.rightEyeCoherenceOctOptions}}
+                    </div>
+                    {%endif%}
+                    {% if(diagnosisArray.data.rightEyeCoherenceOctIhave) %}
+                    <div class="col-md-12 m-b15">
+                        {{diagnosisArray.data.rightEyeCoherenceOctIhave}}
+                    </div>
+                    {%endif%}
+                    
+
+                    {% if(diagnosisArray.data.rightEyeCohrncOctMeasurement.length>0) %}
+                    <div class="col-md-12 m-b15">
+                        {{diagnosisArray.data.rightEyeCohrncOctMeasurement}}
+                    </div>
+                    {%endif%}
+
+                    {% if(diagnosisArray.data.rightEyeCoherenceOctOther) %}
+                    <div class="col-md-12 m-b15">
+                        Other - {{diagnosisArray.data.rightEyeCoherenceOctOther}}
+                    </div>
+                    {%endif%} 
+
+                    {% if(diagnosisArray.data.rightEyeCoherenceOctImages.length>0) %}
+                    <div>
+                        {%for rightCoherence in diagnosisArray.data.rightEyeCoherenceOctImages %}
+                        <div class="col-md-3 m-b15">
+                        <img alt="" class="img-responsive" src="/uploads/diagnosis/{{rightCoherence}}">
+                        </div>
+                     {%endfor%}
+                    </div>
+                    {%endif%}
+                </div>
+            </div>
+        </div>
+    </div>
+   </div>
+</div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">16. Have you undergone electroretinogram ?</h4>
+  </div>
+  <div id="questionFourteen" class="panel-collapse collapse in" aria-expanded="true" style="">
+    <div class="panel-body">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs">
+        <li class="active"><a href="#leftRetinogram" data-toggle="tab" aria-expanded="true">Left Eye</a>
+        </li>
+        <li class=""><a href="#rightRetinogram" data-toggle="tab" aria-expanded="false">Right Eye</a>
+        </li>
+        </ul>    
+        <!-- Nav tabs -->
+        
+        <div class="tab-content">
+            <div class="tab-pane fade active in" id="leftRetinogram">
+                <div class="table-responsive">
+
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>S.No </th>
+                                <th>Date</th>
+                                <th>Red</th>
+                                <th>Green</th>
+                                <th>Black</th>
+                                <th>White</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% set leftErgCount = 1 %}
+                        {%for leftERGData in diagnosisArray.data.leftEyeErgRecordingStimulus %}
+                            <tr>
+                                <th scope="row">{{leftErgCount}}</th>
+                                <td>{{leftERGData.date}}</td>
+                                <td>
+                                    <div>
+                                        Other - {{leftERGData.red.other}}
+                                    </div>
+                                    <div>
+                                        b- wave (mV) - {{leftERGData.red["b- wave (mV)"]}}
+                                    </div>
+                                    <div>
+                                        a- wave (mV) - {{leftERGData.red["a- wave (mV)"]}}
+                                    </div>
+                                    <div>
+                                        latency(msec) - {{leftERGData.red["latency(msec)"]}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        Other - {{leftERGData.green.other}}
+                                    </div>
+                                    <div>
+                                        b- wave (mV) - {{leftERGData.green["b- wave (mV)"]}}
+                                    </div>
+                                    <div>
+                                        a- wave (mV) - {{leftERGData.green["a- wave (mV)"]}}
+                                    </div>
+                                    <div>
+                                        latency(msec) - {{leftERGData.green["latency(msec)"]}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        Other - {{leftERGData.black.other}}
+                                    </div>
+                                    <div>
+                                        b- wave (mV) - {{leftERGData.black["b- wave (mV)"]}}
+                                    </div>
+                                    <div>
+                                        a- wave (mV) - {{leftERGData.black["a- wave (mV)"]}}
+                                    </div>
+                                    <div>
+                                        latency(msec) - {{leftERGData.black["latency(msec)"]}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        Other - {{leftERGData.white.other}}
+                                    </div>
+                                    <div>
+                                        b- wave (mV) - {{leftERGData.white["b- wave (mV)"]}}
+                                    </div>
+                                    <div>
+                                        a- wave (mV) - {{leftERGData.white["a- wave (mV)"]}}
+                                    </div>
+                                    <div>
+                                        latency(msec) - {{leftERGData.white["latency(msec)"]}}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% set leftErgCount = leftErgCount + 1 %}
+                        {%endfor%}
+                        </tbody>
+                    </table>
+			<div>
+				  {% if(diagnosisArray.data.leftEyeErgRecordingOther != '') %}
+				  Other - {{diagnosisArray.data.leftEyeErgRecordingOther}}
+				  {%endif%}
+			</div>
+			
+                    {% if(diagnosisArray.data.leftEyeErgRecordingImages.length>0) %}
+                    <div>
+                        {%for leftERG in diagnosisArray.data.leftEyeErgRecordingImages %}
+                        <div class="col-md-3 m-b15">
+                        <img alt="" class="img-responsive" src="/uploads/diagnosis/{{leftERG}}">
+                        </div>
+                     {%endfor%}
+                    </div>
+                    {%endif%}
+			
+            </div>
+            </div>
+            <div class="tab-pane fade" id="rightRetinogram">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>S.No </th>
+                                <th>Date</th>
+                                <th>Red</th>
+                                <th>Green</th>
+                                <th>Black</th>
+                                <th>White</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% set rightErgCount = 1 %}
+                        {%for rightERGData in diagnosisArray.data.rightEyeErgRecordingStimulus %}
+                            <tr>
+                                <th scope="row">{{rightErgCount}}</th>
+                                <td>{{rightERGData.date}}</td>
+                                <td>
+                                    <div>
+                                        Other - {{rightERGData.red.other}}
+                                    </div>
+                                    <div>
+                                        b- wave (mV) - {{rightERGData.red["b- wave (mV)"]}}
+                                    </div>
+                                    <div>
+                                        a- wave (mV) - {{rightERGData.red["a- wave (mV)"]}}
+                                    </div>
+                                    <div>
+                                        latency(msec) - {{rightERGData.red["latency(msec)"]}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        Other - {{rightERGData.green.other}}
+                                    </div>
+                                    <div>
+                                        b- wave (mV) - {{rightERGData.green["b- wave (mV)"]}}
+                                    </div>
+                                    <div>
+                                        a- wave (mV) - {{rightERGData.green["a- wave (mV)"]}}
+                                    </div>
+                                    <div>
+                                        latency(msec) - {{rightERGData.green["latency(msec)"]}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        Other - {{rightERGData.black.other}}
+                                    </div>
+                                    <div>
+                                        b- wave (mV) - {{rightERGData.black["b- wave (mV)"]}}
+                                    </div>
+                                    <div>
+                                        a- wave (mV) - {{rightERGData.black["a- wave (mV)"]}}
+                                    </div>
+                                    <div>
+                                        latency(msec) - {{rightERGData.black["latency(msec)"]}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <div>
+                                        Other - {{rightERGData.white.other}}
+                                    </div>
+                                    <div>
+                                        b- wave (mV) - {{rightERGData.white["b- wave (mV)"]}}
+                                    </div>
+                                    <div>
+                                        a- wave (mV) - {{rightERGData.white["a- wave (mV)"]}}
+                                    </div>
+                                    <div>
+                                        latency(msec) - {{rightERGData.white["latency(msec)"]}}
+                                    </div>
+                                </td>
+                            </tr>
+                        {% set rightErgCount = rightErgCount + 1 %}
+                        {%endfor%}
+                        </tbody>
+                    </table>
+			<div>
+				  {% if(diagnosisArray.data.rightEyeErgRecordingOther != '') %}
+				  Other - {{diagnosisArray.data.rightEyeErgRecordingOther}}
+				  {%endif%}
+			</div>
+
+                    {% if(diagnosisArray.data.rightEyeErgRecordingImages.length>0) %}
+                    <div>
+                        {%for rightERG in diagnosisArray.data.rightEyeErgRecordingImages %}
+                        <div class="col-md-3 m-b15">
+                        <img alt="" class="img-responsive" src="/uploads/diagnosis/{{rightERG}}">
+                        </div>
+                     {%endfor%}
+                    </div>
+                    {%endif%}
+                    
+            </div>
+            </div>
+        </div>
+    </div>
+   </div>
+</div>
+
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">17. Have you undergone magnetic resonance imaging ?</h4>
+  </div>
+  <div id="questionFifteen" class="panel-collapse collapse in" aria-expanded="true" style="">
+    <div class="panel-body">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+    <li class="active"><a href="#leftResonance" data-toggle="tab" aria-expanded="true">Left Eye</a>
+    </li>
+    <li class=""><a href="#rightSenonance" data-toggle="tab" aria-expanded="false">Right Eye</a>
+    </li>
+    <li class=""><a href="#undergoneImages" data-toggle="tab" aria-expanded="false">Images</a>
+    </li>
+    </ul>    
+    <!-- Nav tabs -->
+    
+     <div class="tab-content">
+        <div class="tab-pane fade active in" id="leftResonance">
+            <div class="panel-body">
+                {% if(diagnosisArray.data.leftEyeMRIDescription) %}
+                <div>
+                    Description - {{diagnosisArray.data.leftEyeMRIDescription}}
+                </div>
+                {%endif%}
+            </div>
+        </div>
+        <div class="tab-pane fade" id="rightSenonance">
+            <div class="panel-body">
+                {% if(diagnosisArray.data.rightEyeMRIDescription) %}
+                <div>
+                    Description - {{diagnosisArray.data.rightEyeMRIDescription}}
+                </div>
+                {%endif%}
+            </div>
+        </div>
+        <div class="tab-pane fade" id="undergoneImages">
+            <div class="table-responsive">
+                 {%for mriImages in diagnosisArray.data.mriImages %}
+                    <div class="col-md-3 m-b15">
+                        <img alt="" class="img-responsive" src="/uploads/diagnosis/{{mriImages}}">
+                    </div>
+                 {%endfor%}
+            </div>
+        </div>
+    </div>
+  </div>
+ </div>
+</div>
+
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h4 class="panel-title">18. Is your diagnosis genetically confirmed & mutation found ?</h4>
+  </div>
+  <div id="questionSixteen" class="panel-collapse collapse in" aria-expanded="true" style="">
+    <div class="panel-body">
+        {% if(diagnosisArray.data.geneticallyConfirm) %}
+        <div>
+            {{diagnosisArray.data.geneticallyConfirm}}
+        </div>
+        {%endif%}
+        {%for geneticImages in diagnosisArray.data.geneticallyConfirmImages %}
+        <div class="col-md-3 m-b15">
+                        <img alt="" class="img-responsive" src="/uploads/diagnosis/{{geneticImages}}">
+        </div>
+        {%endfor%}
+  </div>
+ </div>
+</div>
+
+{% endif %} 
+{% endblock %} 

@@ -1,0 +1,50 @@
+{% extends "layout.ejs" %}
+
+{% block content %}
+{%if passwordSucc != '' %}
+    <div id="updatePwdSucc" class="alert-success" style="padding:6px 10px"> {{passwordSucc}}</div>
+{%endif%}	
+{%if passwordFail != '' %}
+    <div id="updatePwdErr" class="alert-danger" style="padding:6px 10px"> {{passwordFail}}</div>
+{%endif%}	
+{%if passwordNotMatch != '' %}
+    <div id="updatePwdNtMtch" class="alert-danger" style="padding:6px 10px"> {{passwordNotMatch}}</div>
+{%endif%}	
+
+<script type="text/javascript" src="/js/datatables/jquery.validate.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#reset").validate({
+            rules: {
+                new_password:  {required: true, minlength: 6, maxlength: 16},
+                cpassword: { equalTo: "#new_password",required: true, minlength: 6, maxlength: 16}
+            },
+            messages: {
+                new_password: {required: "You can't leave this empty.", email: "Invalid email address."},
+                cpassword: {required: "You can't leave this empty.", maxlength: "Password not exceed 16 characters."}
+            }
+        });
+    //Hide messages automatically
+    setTimeout(function() { $('#updatePwdSucc').css('display','none'); }, 2500);
+    setTimeout(function() { $('#updatePwdErr').css('display','none'); }, 2500);
+    setTimeout(function() { $('#updatePwdNtMtch').css('display','none'); }, 2500);
+    });
+</script>
+
+<div class="col-sm-6 col-sm-offset-3">    
+    <!-- Reset password form -->
+    <form action="/admin/change" method="post" name="reset" id="reset" class="form-signin">     
+    <h3 class="form-signin-heading">Reset Password</h3>   
+            <label class="sr-only">New password</label>
+            <input placeholder="New password" type="password" class="form-control" name="new_password" id="new_password" minlength="6" maxlength="15" value="">       
+            <label class="sr-only">Confirm password</label>
+            <input placeholder="Confirm password" type="password" class="form-control" name="cpassword" id="cpassword" minlength="6" maxlength="15">
+        <button type="submit" class="btn btn-lg btn-primary btn-block" tittl="Reset password">Reset password</button>
+    </form>
+</div>
+
+{% endblock %} 
+
+
+
+

@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+{% block meta %}
+<meta property="og:title" content="{{post.name}}"/>
+<meta property="og:description" content="{{post.description|striptags|truncate(100, true)}}"/>
+<meta property="og:image" content="{{post.image}}">
+<meta property="og:type" content="posts"/>
+{% endblock %}
+{% block banner %}
+<div class="container" class="banner">
+    <div class="jumbotron">
+      <div class="row">
+          <strong> Your banner </strong>
+      </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block header %}
+  <ol class="breadcrumb">
+    <li><a href="/">Home</a></li>
+    <li class="active">{{ __("Post") }}</li>
+  </ol>
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-sm-8">
+    <h1>{{post.name}}</h1>
+    <hr>
+{% if categories %}
+    {% for cat in categories %}
+        <div>{{cat.name}}</div></br>
+    {% endfor %}
+{%endif%}     
+    {%if post.image%}<div><img src="{{post.image}}" title="{{post.name}}" alt="{{post.name}}" style="width:100%;" ></div>{%endif%}
+    <div>{{post.dateFormat().month_str_short}} {{post.dateFormat().day}}</div>
+    <div>{{content|safe}}</div>
+  </div>
+  <div class="col-sm-4">
+    <div class="banner">
+      <div class="row">
+          <div class="thumbnail">
+            <div class="caption">
+              <h3>Thumbnail label</h3>
+               <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+            </div>
+          </div>
+      </div>
+    </div>
+{% if tags %}
+    <div class="banner">
+      <div class="row">
+          <div class="thumbnail">
+            <div class="caption">
+              <h3>Tags</h3>
+              {% for tag in tags %}
+               <a href="/post/tag/?t={{tag.name}}" class="btn btn-default" >{{tag.name}}</a>
+              {% endfor %}
+            </div>
+          </div>
+      </div>
+    </div> 
+{%endif%}   
+  </div>
+</div>
+
+{% include "subpagination.html" %}    
+
+{% endblock %}

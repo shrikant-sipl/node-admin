@@ -1,0 +1,48 @@
+{% extends "layout.ejs" %}
+{% block content %}
+
+<script>
+$( document ).ready(function() { 
+    $('#users-listing').DataTable();
+});
+</script>
+{% if diagnosisArray.length>0 %}
+
+<table id="users-listing" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+          <th>S.No</th>
+          <th>User Name</th>
+          <th>Relation</th>
+          <th>Date of Birth</th>
+          <th>Disease Name</th>
+          <th>Part Of Eye</th>
+          <th>Date of user's last activity</th>
+          <th class="text-center">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% set sn = 1 %}
+    {%for diagnosis in diagnosisArray%}
+        <tr>
+          <th scope="row">{{sn}}</th>
+          <td>{{diagnosis.userId.firstName}} {{diagnosis.userId.lastName}}</td>
+          {% if(diagnosis.selfHave == 'I have the disease') %}
+          <td>Me</td>
+          {%endif%}
+          {% if(diagnosis.selfHave != 'I have the disease') %}
+          <td>{{diagnosis.userRelative}}</td>
+          {%endif%}
+          <td>{{diagnosis.dateOfBirth}}</td>
+          <td>{{diagnosis.diagnosisName}}</td>
+          <td>{{diagnosis.eyePartName}}</td>
+          <td>{{diagnosis.formatedDate}}</td>
+          <td class="text-center"><a href="/admin/diagnosis/{{diagnosis._id}}"><span class='glyphicon glyphicon-eye-open' aria-hidden='true'></span></a></td>
+        </tr>
+        {% set sn = sn + 1 %}
+    {%endfor%}
+    </tbody>
+</table>
+
+{% endif %} 
+{% endblock %}

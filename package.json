@@ -1,0 +1,69 @@
+{
+  "name": "severus",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "async": "x",
+    "bcrypt-nodejs": "x",
+    "bcryptjs": "^2.3.0",
+    "bluebird": "^3.4.6",
+    "body-parser": "x",
+    "consolidate": "x",
+    "cookie-parser": "x",
+    "cookie-session": "x",
+    "crypto": "0.0.3",
+    "csurf": "x",
+    "ejs": "^2.5.5",
+    "errorhandler": "x",
+    "express": "x",
+    "express-flash": "x",
+    "express-session": "x",
+    "express-validator": "x",
+    "fs": "0.0.1-security",
+    "github-api": "x",
+    "hogan.js": "x",
+    "i18n": "x",
+    "is-json": "^2.0.1",
+    "lodash": "x",
+    "lusca": "x",
+    "md5": "^2.2.1",
+    "method-override": "x",
+    "moment": "^2.17.1",
+    "mongoose": "x",
+    "mongoose-types": "x",
+    "multer": "x",
+    "multiparty": "^4.1.2",
+    "mysql": "^2.15.0",
+    "nodemailer": "^2.6.4",
+    "nodemailer-smtp-transport": "^2.7.2",
+    "nunjucks": "x",
+    "passport": "x",
+    "passport-github": "x",
+    "passport-local": "x",
+    "slugify-url": "x"
+  },
+  "engines": {
+    "node": "x",
+    "npm": "x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/and07/severus.git"
+  },
+  "keywords": [
+    "HMVC",
+    "MVC",
+    "Framework",
+    "module",
+    "modules structure"
+  ],
+  "devDependencies": {
+    "nodemon": "^1.10.2",
+    "supertest": "x"
+  },
+  "author": "and07",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/and07/severus/issues"
+  }
+}

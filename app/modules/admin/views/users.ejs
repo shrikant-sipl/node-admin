@@ -1,0 +1,58 @@
+{% extends "layout.ejs" %}
+{% block content %}
+{%if deletedRecord  != '' %}
+    <div id="delRecordSucc" class="alert-success" style="padding:6px 10px"> {{deletedRecord}}</div>
+{%endif%}	
+{%if deletedError  != '' %}
+    <div id="delRecordErr" class="alert-danger" style="padding:6px 10px"> {{deletedError}}</div>
+{%endif%}	
+{%if updateError  != '' %}
+    <div id="updateRecordErr" class="alert-danger" style="padding:6px 10px"> {{updateError}}</div>
+{%endif%}	
+{%if updateUserSucc  != '' %}
+    <div id="updateRecordSucc" class="alert-success" style="padding:6px 10px"> {{updateUserSucc}}</div>
+{%endif%}
+
+<script>
+$( document ).ready(function() { 
+    $('#users-listing').DataTable();
+    //Hide messages automatically
+    setTimeout(function() { $('#updateRecordSucc').css('display','none'); }, 2500);
+    setTimeout(function() { $('#updateRecordErr').css('display','none'); }, 2500);
+    setTimeout(function() { $('#delRecordSucc').css('display','none'); }, 2500);
+    setTimeout(function() { $('#delRecordErr').css('display','none'); }, 2500);
+});
+</script>
+{% if usersArray.length>0 %}
+
+<table id="users-listing" class="table table-striped table-bordered" cellspacing="0" width="100%">
+    <thead>
+        <tr>
+          <th>S.No</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th class="text-center">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% set sn = 1 %}
+    {%for users in usersArray%}
+        <tr>
+          <th scope="row">{{sn}}</th>
+          <td>{{users.firstName}}</td>
+          <td>{{users.lastName}}</td>
+          <td>{{users.email}}</td>
+          <td class="text-center"><a href="/admin/edit/{{users._id}}"><span class='glyphicon glyphicon-pencil' aria-hidden='true'></span></a>&nbsp;&nbsp;&nbsp;&nbsp;<a onclick="return confirm('Are you sure you want to delete this record?')" href="/admin/delete/{{users._id}}"><span class='glyphicon glyphicon-trash text-danger' aria-hidden='true'></span></a></td>
+        </tr>
+        {% set sn = sn + 1 %}
+    {%endfor%}
+    </tbody>
+</table>
+
+{% endif %} 
+{% endblock %} 
+
+
+
+
